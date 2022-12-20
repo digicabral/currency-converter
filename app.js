@@ -7,6 +7,22 @@ var logger = require('morgan');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
+(async () => {
+  const database = require('./db');
+  const User = require('./models/user');
+
+  try {
+      const resultado = await database.sync();
+      const resultadoCreate = await User.create({
+        email: 'mail@test.com',
+        name: 'name1'
+    })
+      console.log(resultado);
+  } catch (error) {
+      console.log(error);
+  }
+})();
+
 var app = express();
 
 // view engine setup
