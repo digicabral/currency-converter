@@ -6,18 +6,13 @@ var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var convertRouter = require('./routes/convert');
 
 (async () => {
   const database = require('./db');
-  const User = require('./models/user');
 
   try {
-      const resultado = await database.sync();
-      const resultadoCreate = await User.create({
-        email: 'mail@test.com',
-        name: 'name1'
-    })
-      console.log(resultado);
+      const result = await database.sync();
   } catch (error) {
       console.log(error);
   }
@@ -37,6 +32,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/convert', convertRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

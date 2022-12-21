@@ -1,6 +1,7 @@
-var express = require('express');
-var router = express.Router();
-var user = require('../controllers/user')
+const express = require('express');
+const router = express.Router();
+const user = require('../middlewares/user');
+
 
 /* GET users listing. */
 router.get('/', user.get);
