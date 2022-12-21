@@ -11,23 +11,27 @@ Convert.init({
         allowNull: false,
         primaryKey: true
     },
-    origin_currency: {
+    originCurrency: {
         type: DataTypes.STRING,
         allowNull: false
     },
-    origin_value:{
+    originValue:{
         type: DataTypes.FLOAT,
         allowNull: false
     },
-    target_currency: {
+    targetCurrency: {
         type: DataTypes.STRING,
         allowNull: false
     },
-    conversion_rate:{
+    targetValue:{
         type: DataTypes.FLOAT,
         allowNull: false
     },
-    user_id:{
+    conversionRate:{
+        type: DataTypes.FLOAT,
+        allowNull: false
+    },
+    userId:{
         type: DataTypes.INTEGER,
         references:{ 
             model: User,
