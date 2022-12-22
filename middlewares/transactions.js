@@ -2,9 +2,10 @@ const Convert = require('../db_models/convert')
 
 async function get(req, res, next){
     try {
-        userId = req.params.userId;
+        userId = req.query.userId;
         limit = req.query.limit;
         offset = req.query.offset;
+        console.log(userId)
         if(!userId){
             res.status(404).send('userID is a mandatory parameter');
         }
@@ -26,7 +27,7 @@ async function get(req, res, next){
             res.status(200).send(transactions)
         }
     } catch (error) {
-        throw new Error('Account Number not found');
+        console.log(error)
     }
 }
 module.exports.get = get;

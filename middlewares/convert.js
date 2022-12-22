@@ -21,14 +21,15 @@ async function get(req, res, next){
             'eur': ratesParsed.rates.EUR,
             'usd': ratesParsed.rates.USD
         }
-        userId = req.query.user;
+        userId = req.query.userId;
+        console.log(userId)
         dbUser = await User.findByPk(userId)
         if (dbUser == null || dbUser == 'null' || dbUser == undefined){
             res.status(404).send('User with id ' + userId + ' not found')
         }
-        originCurrency = req.query.origin_currency;
-        originValue = req.query.origin_rate;
-        targetCurrency = req.query.target_currency;
+        originCurrency = req.query.originCurrency;
+        originValue = req.query.originRate;
+        targetCurrency = req.query.targetCurrency;
 
         if (!utils.multipleExist(allowedCurrencies, [originCurrency, targetCurrency]))
         {
