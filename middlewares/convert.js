@@ -48,8 +48,7 @@ async function get(req, res, next){
                 originValue: originValue,
                 targetCurrency: targetCurrency,
                 targetValue: (originValue/latestRate[originCurrency.toLowerCase()]) * latestRate[targetCurrency.toLowerCase()],
-                conversionRate: (latestRate['eur']/latestRate[originCurrency.toLowerCase()]) * latestRate[targetCurrency.toLowerCase()],
-                transactionDate: new Date(new Date().toUTCString())
+                conversionRate: (latestRate['eur']/latestRate[originCurrency.toLowerCase()]) * latestRate[targetCurrency.toLowerCase()]
             }
 
             async function insertConverted(){
