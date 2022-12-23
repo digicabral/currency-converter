@@ -1,35 +1,22 @@
-var Rate = require('../db_models/rate');
-const User = require('../db_models/user');
-const Convert = require('../db_models/convert')
-const fs = require('fs').promises;
+const user = require('../controllers/user');
+const conversion = require('../controllers/convert');
+const rate = require('../controllers/rate');
 const utils = require('../utils/utils.js')
-const allowedCurrencies = ['BRL', 'USD', 'EUR', 'JPY']
+const allowedCurrencies = ['brl', 'usd', 'eur', 'jpy']
 
 async function get(req, res, next){
     try {
-        async function readJson() {
-            const data = await fs.readFile('./rate.json');
-            return data;
-        }
-        JSONrates = await readJson();
-        ratesParsed = JSON.parse(JSONrates);
-        let rates = {
-            'date': ratesParsed.date,
-            'base': ratesParsed.base,
-            'brl': ratesParsed.rates.BRL,
-            'jpy': ratesParsed.rates.JPY,
-            'eur': ratesParsed.rates.EUR,
-            'usd': ratesParsed.rates.USD
-        }
+        const rates = await rate.getLatestRates();
+
         userId = req.query.userId;
-        console.log(userId)
-        dbUser = await User.findByPk(userId)
+
+        dbUser = await user.getUserById(userId)
         if (dbUser == null || dbUser == 'null' || dbUser == undefined){
             res.status(404).send('User with id ' + userId + ' not found')
         }
-        originCurrency = req.query.originCurrency;
-        originValue = req.query.originRate;
-        targetCurrency = req.query.targetCurrency;
+        const originCurrency = req.query.originCurrency.toLowerCase();
+        const originValue = req.query.originRate.toLowerCase();
+        const targetCurrency = req.query.targetCurrency.toLowerCase();
 
         if (!utils.multipleExist(allowedCurrencies, [originCurrency, targetCurrency]))
         {
@@ -37,30 +24,21 @@ async function get(req, res, next){
         }
         else {
 
-            async function insertRate(){
-                const data = await Rate.create(rates).then(result => result)
-                return data
-            }
-            latestRate = await insertRate();
+            latestRate = await rate.insertRate(rates);
 
             const converted = {
                 userId: userId,
                 originCurrency: originCurrency,
                 originValue: originValue,
                 targetCurrency: targetCurrency,
-                targetValue: (originValue/latestRate[originCurrency.toLowerCase()]) * latestRate[targetCurrency.toLowerCase()],
-                conversionRate: (latestRate['eur']/latestRate[originCurrency.toLowerCase()]) * latestRate[targetCurrency.toLowerCase()]
+                targetValue: (originValue/latestRate[originCurrency]) * latestRate[targetCurrency],
+                conversionRate: (latestRate['eur']/latestRate[originCurrency]) * latestRate[targetCurrency]
             }
-
-            async function insertConverted(){
-                const data = await Convert.create(converted).then(result => result)
-                return data
-            }
-            convertedDB = await insertConverted();
+            
+            convertedDB = await conversion.insertConverted(converted);
 
             res.status(201).json(convertedDB)
         }
-
         }
     catch(err){
         next(err)
