@@ -1,4 +1,5 @@
-const Convert = require('../db_models/convert')
+const Convert = require('../db_models/convert');
+const user = require('../controllers/user');
 
 async function get(req, res, next){
     try {
@@ -18,15 +19,22 @@ async function get(req, res, next){
             offset = 0;
             console.log(offset)
         }
-        //1 - Check if the user exists
-        //2 - Give the right response when no data is found
-        transactions = await Convert.findAll({where: {userId: userId}, offset: offset, limit: limit});
-        if(transactions == null){
-            res.status(404).send('Not found any transaction to the user ' + userId);
+        //check if the user exists
+        const userFromDb = await user.getUserById(userId);
+        if(!userFromDb){
+            res.status(404).send('User ' + userId + ' does not exist.');
         }
         else{
-            res.status(200).send(transactions)
-        }
+            //search for the user's transactions
+            transactions = await Convert.findAll({where: {userId: userId}, offset: offset, limit: limit});
+            console.log('Transactions '+ JSON.stringify(transactions))
+            if(transactions == null || transactions.length == 0){
+                res.status(404).send('Not found any transaction to the user ' + userId);
+            }
+            else{
+                res.status(200).send(transactions)
+            }
+        } 
     } catch (error) {
         console.log(error)
     }
