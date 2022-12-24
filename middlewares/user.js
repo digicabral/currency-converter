@@ -13,7 +13,7 @@ async function post(req, res, next){
 module.exports.post = post;
 
 async function get(req, res, next){
-    const users = await User.findAll();
+    const users = await user.getAllUsers();
     res.send(users)
 }
 module.exports.get = get;

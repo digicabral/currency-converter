@@ -14,7 +14,7 @@
   },
   "servers": [
     {
-      "url": "http://localhost:3000/"
+      "url": "http://localhost:3000"
     }
   ],
   "paths": {
@@ -25,27 +25,16 @@
         ],
         "summary": "Add a new user",
         "description": "Add a new user to make conversions",
-        "operationId": "addPet",
+        "operationId": "addUser",
         "requestBody": {
-          "description": "Create a new pet in the store",
+          "description": "Create a new user",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Pet"
-              }
-            },
-            "application/xml": {
-              "schema": {
-                "$ref": "#/components/schemas/Pet"
-              }
-            },
-            "application/x-www-form-urlencoded": {
-              "schema": {
-                "$ref": "#/components/schemas/Pet"
+                "$ref": "#/components/schemas/User"
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "200": {
@@ -53,12 +42,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Pet"
+                  "$ref": "#/components/schemas/User"
                 }
               },
               "application/xml": {
                 "schema": {
-                  "$ref": "#/components/schemas/Pet"
+                  "$ref": "#/components/schemas/User"
                 }
               }
             }
@@ -66,20 +55,33 @@
           "405": {
             "description": "Invalid input"
           }
-        },
-        "security": [
-          {
-            "petstore_auth": [
-              "write:pets",
-              "read:pets"
-            ]
-          }
-        ]
+        }
       },
       "get": {
         "tags": [
           "User"
-        ]
+        ],
+        "summary": "Return a list of registered users",
+        "description": "List of users that are used to make conversions",
+        "operationId": "getUsers",
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid ID supplied"
+          },
+          "404": {
+            "description": "Pet not found"
+          }
+        }
       }
     },
     "/convert": {
@@ -99,6 +101,36 @@
             "schema": {
               "type": "integer",
               "format": "int64"
+            }
+          },
+          {
+            "name": "originCurrency",
+            "in": "query",
+            "description": "Code of the origin currency that you want to convert. Example JPY, USD, BRL.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "BRL"
+            }
+          },
+          {
+            "name": "originRate",
+            "in": "query",
+            "description": "This is the value you want to convert to the target currency",
+            "required": true,
+            "schema": {
+              "type": "number",
+              "example": 10.87
+            }
+          },
+          {
+            "name": "targetCurrency",
+            "in": "query",
+            "description": "Code of the target currency that you want to convert. Example JPY, USD, BRL.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "USD"
             }
           }
         ],
@@ -124,18 +156,7 @@
           "404": {
             "description": "Pet not found"
           }
-        },
-        "security": [
-          {
-            "api_key": []
-          },
-          {
-            "petstore_auth": [
-              "write:pets",
-              "read:pets"
-            ]
-          }
-        ]
+        }
       }
     },
     "/transactions": {
@@ -275,49 +296,6 @@
           "name": "category"
         }
       },
-      "User": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64",
-            "example": 10
-          },
-          "username": {
-            "type": "string",
-            "example": "theUser"
-          },
-          "firstName": {
-            "type": "string",
-            "example": "John"
-          },
-          "lastName": {
-            "type": "string",
-            "example": "James"
-          },
-          "email": {
-            "type": "string",
-            "example": "john@email.com"
-          },
-          "password": {
-            "type": "string",
-            "example": "12345"
-          },
-          "phone": {
-            "type": "string",
-            "example": "12345"
-          },
-          "userStatus": {
-            "type": "integer",
-            "description": "User Status",
-            "format": "int32",
-            "example": 1
-          }
-        },
-        "xml": {
-          "name": "user"
-        }
-      },
       "Tag": {
         "type": "object",
         "properties": {
@@ -333,7 +311,7 @@
           "name": "tag"
         }
       },
-      "Pet": {
+      "User": {
         "required": [
           "name",
           "e-mail"
@@ -397,25 +375,6 @@
             }
           }
         }
-      }
-    },
-    "securitySchemes": {
-      "petstore_auth": {
-        "type": "oauth2",
-        "flows": {
-          "implicit": {
-            "authorizationUrl": "https://petstore3.swagger.io/oauth/authorize",
-            "scopes": {
-              "write:pets": "modify pets in your account",
-              "read:pets": "read your pets"
-            }
-          }
-        }
-      },
-      "api_key": {
-        "type": "apiKey",
-        "name": "api_key",
-        "in": "header"
       }
     }
   }

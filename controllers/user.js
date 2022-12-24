@@ -6,6 +6,12 @@ async function getUserById(userId){
 }
 module.exports.getUserById = getUserById;
 
+async function getAllUsers(){
+    const users = await User.findAll();
+    return users;
+}
+module.exports.getAllUsers = getAllUsers;
+
 async function insertUser(user){
     const userInserted = User.create(user).then(result =>result);
     return userInserted;
