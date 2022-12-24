@@ -7,7 +7,7 @@ const allowed = require('../schema/currency-schema');
 async function get(req, res, next){
     try {
         userId = req.query.userId;
-        
+
         dbUser = await user.getUserById(userId)
         if (dbUser == null || dbUser == 'null' || dbUser == undefined){
             res.status(404).send('User with id ' + userId + ' not found')

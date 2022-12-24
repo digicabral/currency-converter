@@ -35,21 +35,20 @@ async function getApiExchangeRates(){
     return teste
 }
 
-async function getLatestRates(){
+async function getLatestRates(originCurrency, targetCurrency){
     const apiRates = await getApiExchangeRates();
     if (!apiRates.success){
         return apiRates;
     }
     else{
-        //console.log('Rates from api ' + JSON.stringify(apiRates))
-        const rates = {
+         const rates = {
             'date': apiRates.date,
             'base': apiRates.base,
-            'BRL': apiRates.rates.BRL,
-            'JPY': apiRates.rates.JPY,
             'EUR': apiRates.rates.EUR,
-            'USD': apiRates.rates.USD
+            [originCurrency]: apiRates.rates[originCurrency],
+            [targetCurrency]: apiRates.rates[targetCurrency]
         }
+        console.log('rates ' + JSON.stringify(rates))
         return rates
     }
 }

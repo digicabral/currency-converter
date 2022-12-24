@@ -9,7 +9,7 @@ async function insertConverted(converted){
 module.exports.insertConverted = insertConverted;
 
 async function calculateConversion(originCurrency, originValue, targetCurrency){
-    const latestRates = await rate.getLatestRates();
+    const latestRates = await rate.getLatestRates(originCurrency, targetCurrency);
     const converted = {
         userId: userId,
         originCurrency: originCurrency,
