@@ -5,3 +5,9 @@ async function getUserById(userId){
     return user;
 }
 module.exports.getUserById = getUserById;
+
+async function insertUser(user){
+    const userInserted = User.create(user).then(result =>result);
+    return userInserted;
+}
+module.exports.insertUser = insertUser;

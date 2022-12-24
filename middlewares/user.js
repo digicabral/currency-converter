@@ -1,9 +1,9 @@
-var User = require('../db_models/user');
+const user = require('../controllers/user');
+
 async function post(req, res, next){
     try {
-            await User.create(req.body).then(()=>{
-            res.send('user inserted');
-            })
+            const userFromDb = await user.insertUser(req.body)
+            res.status(201).send(userFromDb);
         }
     catch(err){
         next(err)
