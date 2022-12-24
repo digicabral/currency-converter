@@ -114,7 +114,7 @@
             }
           },
           {
-            "name": "originRate",
+            "name": "originValue",
             "in": "query",
             "description": "This is the value you want to convert to the target currency",
             "required": true,
@@ -140,21 +140,26 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Pet"
-                }
-              },
-              "application/xml": {
-                "schema": {
-                  "$ref": "#/components/schemas/Pet"
+                  "$ref": "#/components/schemas/Conversion"
                 }
               }
             }
           },
           "400": {
-            "description": "Invalid ID supplied"
+            "description": "One or more parameters not filled properly",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConversionErrors"
+                }
+              }
+            }
           },
           "404": {
-            "description": "Pet not found"
+            "description": "User not found"
+          },
+          "422": {
+            "description": "Not allowed currency"
           }
         }
       }
@@ -165,19 +170,56 @@
           "Transactions"
         ],
         "summary": "Returns the conversions made by a user",
-        "description": "Returns a map of status codes to quantities",
-        "operationId": "getInventory",
+        "description": "Returns the user's conversions",
+        "operationId": "getTransactions",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "query",
+            "description": "ID of the user",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Limit the number of records returned",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "example": 10
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "Specifies how many records will be skipped",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "example": 0
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "successful operation",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "additionalProperties": {
-                    "type": "integer",
-                    "format": "int32"
-                  }
+                  "$ref": "#/components/schemas/Transactions"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "User ID can't be empty or is not a integer number",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConversionErrors"
                 }
               }
             }
@@ -188,7 +230,7 @@
   },
   "components": {
     "schemas": {
-      "Order": {
+      "Conversion": {
         "type": "object",
         "properties": {
           "id": {
@@ -196,119 +238,73 @@
             "format": "int64",
             "example": 10
           },
-          "petId": {
+          "userId": {
             "type": "integer",
             "format": "int64",
             "example": 198772
           },
-          "quantity": {
-            "type": "integer",
-            "format": "int32",
-            "example": 7
-          },
-          "shipDate": {
+          "originCurrency": {
             "type": "string",
-            "format": "date-time"
+            "example": "BRL"
           },
-          "status": {
+          "originValue": {
+            "type": "number",
+            "example": 10.27
+          },
+          "targetCurrency": {
             "type": "string",
-            "description": "Order Status",
-            "example": "approved",
-            "enum": [
-              "placed",
-              "approved",
-              "delivered"
-            ]
+            "example": "USD"
           },
-          "complete": {
-            "type": "boolean"
+          "targetValue": {
+            "type": "number",
+            "example": 1.99
+          },
+          "conversionRate": {
+            "type": "number",
+            "example": 0.19
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "datetime",
+            "example": "2022-12-21T20:34:27.143Z"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "datetime",
+            "example": "2022-12-21T20:34:27.143Z"
           }
-        },
-        "xml": {
-          "name": "order"
         }
       },
-      "Customer": {
+      "Errors": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64",
-            "example": 100000
-          },
-          "username": {
+          "value": {
             "type": "string",
-            "example": "fehguy"
+            "example": ""
           },
-          "address": {
+          "msg": {
+            "type": "string",
+            "example": "userId cannot be empty"
+          },
+          "param": {
+            "type": "string",
+            "example": "userId"
+          },
+          "location": {
+            "type": "string",
+            "example": "query"
+          }
+        }
+      },
+      "ConversionErrors": {
+        "type": "object",
+        "properties": {
+          "errors": {
             "type": "array",
-            "xml": {
-              "name": "addresses",
-              "wrapped": true
-            },
             "items": {
-              "$ref": "#/components/schemas/Address"
+              "$ref": "#/components/schemas/Errors"
             }
           }
-        },
-        "xml": {
-          "name": "customer"
-        }
-      },
-      "Address": {
-        "type": "object",
-        "properties": {
-          "street": {
-            "type": "string",
-            "example": "437 Lytton"
-          },
-          "city": {
-            "type": "string",
-            "example": "Palo Alto"
-          },
-          "state": {
-            "type": "string",
-            "example": "CA"
-          },
-          "zip": {
-            "type": "string",
-            "example": "94301"
-          }
-        },
-        "xml": {
-          "name": "address"
-        }
-      },
-      "Category": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64",
-            "example": 1
-          },
-          "name": {
-            "type": "string",
-            "example": "Dogs"
-          }
-        },
-        "xml": {
-          "name": "category"
-        }
-      },
-      "Tag": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "name": {
-            "type": "string"
-          }
-        },
-        "xml": {
-          "name": "tag"
         }
       },
       "User": {
@@ -328,37 +324,20 @@
           }
         }
       },
-      "ApiResponse": {
-        "type": "object",
-        "properties": {
-          "code": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "type": {
-            "type": "string"
-          },
-          "message": {
-            "type": "string"
-          }
-        },
-        "xml": {
-          "name": "##default"
+      "Transactions": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Conversion"
         }
       }
     },
     "requestBodies": {
-      "Pet": {
-        "description": "Pet object that needs to be added to the store",
+      "User": {
+        "description": "User object that needs to be added to the store",
         "content": {
           "application/json": {
             "schema": {
-              "$ref": "#/components/schemas/Pet"
-            }
-          },
-          "application/xml": {
-            "schema": {
-              "$ref": "#/components/schemas/Pet"
+              "$ref": "#/components/schemas/User"
             }
           }
         }

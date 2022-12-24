@@ -13,7 +13,7 @@ async function get(req, res, next){
             res.status(404).send('User with id ' + userId + ' not found')
         }
         const originCurrency = req.query.originCurrency;
-        const originValue = req.query.originRate;
+        const originValue = req.query.originValue;
         const targetCurrency = req.query.targetCurrency;
 
         if (!convert.canBeConverted(allowed.allowedCurrencies, originCurrency, targetCurrency))
@@ -23,7 +23,7 @@ async function get(req, res, next){
         else {
             const conversion = await convert.calculateConversion(originCurrency, originValue, targetCurrency)
             const convertedFromDB = await convert.insertConverted(conversion);
-            res.status(201).json(convertedFromDB)
+            res.status(200).json(convertedFromDB)
         }
         }
     catch(err){
