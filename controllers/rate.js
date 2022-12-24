@@ -18,7 +18,7 @@ const exchangeConfig = {
 async function getApiExchangeRates(){
     const teste = await axios(exchangeConfig)
     .then(function (response) {
-      console.log(JSON.stringify(response.data));
+      //console.log(JSON.stringify(response.data));
       return response.data
     })
     .catch(function (error) {
@@ -41,13 +41,14 @@ async function getLatestRates(){
         return apiRates;
     }
     else{
+        //console.log('Rates from api ' + JSON.stringify(apiRates))
         const rates = {
             'date': apiRates.date,
             'base': apiRates.base,
-            'brl': apiRates.rates.BRL,
-            'jpy': apiRates.rates.JPY,
-            'eur': apiRates.rates.EUR,
-            'usd': apiRates.rates.USD
+            'BRL': apiRates.rates.BRL,
+            'JPY': apiRates.rates.JPY,
+            'EUR': apiRates.rates.EUR,
+            'USD': apiRates.rates.USD
         }
         return rates
     }

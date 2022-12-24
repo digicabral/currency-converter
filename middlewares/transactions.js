@@ -18,7 +18,8 @@ async function get(req, res, next){
             offset = 0;
             console.log(offset)
         }
-
+        //1 - Check if the user exists
+        //2 - Give the right response when no data is found
         transactions = await Convert.findAll({where: {userId: userId}, offset: offset, limit: limit});
         if(transactions == null){
             res.status(404).send('Not found any transaction to the user ' + userId);

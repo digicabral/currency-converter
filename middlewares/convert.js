@@ -1,43 +1,29 @@
 const user = require('../controllers/user');
-const conversion = require('../controllers/convert');
+const convert = require('../controllers/convert');
 const rate = require('../controllers/rate');
-const utils = require('../utils/utils.js')
-const allowedCurrencies = ['brl', 'usd', 'eur', 'jpy']
+const utils = require('../utils/utils.js');
+const allowed = require('../schema/currency-schema');
 
 async function get(req, res, next){
     try {
-        const rates = await rate.getLatestRates();
-
         userId = req.query.userId;
-
+        
         dbUser = await user.getUserById(userId)
         if (dbUser == null || dbUser == 'null' || dbUser == undefined){
             res.status(404).send('User with id ' + userId + ' not found')
         }
-        const originCurrency = req.query.originCurrency.toLowerCase();
-        const originValue = req.query.originRate.toLowerCase();
-        const targetCurrency = req.query.targetCurrency.toLowerCase();
+        const originCurrency = req.query.originCurrency;
+        const originValue = req.query.originRate;
+        const targetCurrency = req.query.targetCurrency;
 
-        if (!utils.multipleExist(allowedCurrencies, [originCurrency, targetCurrency]))
+        if (!convert.canBeConverted(allowed.allowedCurrencies, originCurrency, targetCurrency))
         {
             res.status(422).send('Not allowed currency')
         }
         else {
-
-            latestRate = await rate.insertRate(rates);
-
-            const converted = {
-                userId: userId,
-                originCurrency: originCurrency,
-                originValue: originValue,
-                targetCurrency: targetCurrency,
-                targetValue: (originValue/latestRate[originCurrency]) * latestRate[targetCurrency],
-                conversionRate: (latestRate['eur']/latestRate[originCurrency]) * latestRate[targetCurrency]
-            }
-            
-            convertedDB = await conversion.insertConverted(converted);
-
-            res.status(201).json(convertedDB)
+            const conversion = await convert.calculateConversion(originCurrency, originValue, targetCurrency)
+            const convertedFromDB = await convert.insertConverted(conversion);
+            res.status(201).json(convertedFromDB)
         }
         }
     catch(err){
