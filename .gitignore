@@ -62,3 +62,6 @@ typings/
 
 #Notes
 notes.txt
+
+#SQLITE database
+.sqlite

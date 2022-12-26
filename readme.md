@@ -19,8 +19,8 @@
 > [![My Skills](https://skillicons.dev/icons?i=nodejs)](https://skillicons.dev) The project was built using Node JS. <br/><br/>
 > [![My Skills](https://skillicons.dev/icons?i=express)](https://skillicons.dev) Express is the most popular and simple Node.JS web framework, to create web apps and APIS. And in this case was used to control all the routes and HTTP requests and responses. <br/><br/>
 > [![My Skills](https://skillicons.dev/icons?i=sqlite)](https://skillicons.dev) SQLite is one of the most used database engines in the world, and it's an embedded SQL database engine.  for this reason, it was used as database to store the user information, and the currencies conversions made by a user. </br></br>
-> - Sequelize: Sequelize is a promise-based Node.js ORM tool for Postgres, MySQL, SQLite and many others. And in this case was used to map the objects, and make the database operations like SELECT, INSERT, etc. using javascript instead of pure SQL.
-> - Swagger: Swagger allows you to describe your API structure and document it in a simple and beautiful way. In addition to providing an interface for testing the API without the need to use any third-party tools.
+> - Sequelize: is a promise-based Node.js ORM tool for Postgres, MySQL, SQLite and many others. And in this case was used to map the objects, and make the database operations like SELECT, INSERT, etc. using javascript instead of pure SQL.
+> - Swagger: allows you to describe your API structure and document it in a simple and beautiful way. In addition to providing an interface for testing the API without the need to use any third-party tools.
 > - Express validator: is a set of express.js middleware that wraps around to validate HTTP requests in a simple and practical way, specifying several validation rules without the need to write a bunch of if and elses.
 > - Axios: 
 
@@ -45,14 +45,23 @@ The project was separated into 4 layers:
         <ol>
             <li>Access the repository through [this link](https://github.com/digicabral/currency-converter) and download the zip file.</li>
             <li>Extract the zip file downloaded to a folder in your computer and open it. </li>
-            <li>Open this directory on your command line tool.</li>
+            <li>Open this directory on your command line tool and type the following command to install the dependencies.</br>
+                 ```
+                npm install
+                ```
+            </li>
             <li>Create the enviroment variables as the .env.example file at the root folder shows. </li>
                 <ul>
-                    <li>To create </li>
+                    <li>Example of creating environment variable using windows powershell </br> 
+                        ```
+                        $env:API_KEY="yourapikey"
+                        $env:EXCHANGE_API="https://api.apilayer.com/exchangerates_data/latest?"
+                        ```
+                    </li>
                 </ul>
-            <li>To run run the dev environment type:
+            <li>To run the app type:
                 ```
-                npm run dev
+                npm start
                 ```
             </li>
         </ol>

@@ -25,10 +25,10 @@ const transactionsRouter = require('./routes/transactions');
 var app = express();
 
 // view engine setup
-//app.set('views', path.join(__dirname, 'views'));
-//app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'ejs');
 
-const whitelist = ['http://localhost','SK-NB-0136135']
+const whitelist = ['http://localhost']
 
 const corsOptions = {
   origin: function(origin, callback){
@@ -54,7 +54,7 @@ app.use('/transactions', transactionsRouter);
 
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerFile))
 // catch 404 and forward to error handler
-/*app.use(function(req, res, next) {
+app.use(function(req, res, next) {
   next(createError(404));
 });
 
@@ -67,6 +67,6 @@ app.use(function(err, req, res, next) {
   // render the error page
   res.status(err.status || 500);
   res.render('error');
-});*/
+});
 
 module.exports = app;
