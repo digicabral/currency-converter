@@ -97,7 +97,7 @@ The project was separated into 4 layers: </br>
     The list of currencies that can be converted between each other is the following:
     
     | Currency code |
-    -----------------
+    |---------------|
     |      AED      |
     |      AFN      |
     |      ALL      |
