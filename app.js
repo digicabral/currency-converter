@@ -29,7 +29,7 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-const whitelist = ['http://localhost']
+const whitelist = [process.env.DOMAIN]
 
 const corsOptions = {
   origin: function(origin, callback){
