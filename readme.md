@@ -274,6 +274,7 @@ The project was separated into 4 layers: </br>
     http://localhost:3000/transactions/?userId=1
     ```
     And the response will be an array listing all the user's conversions:
+
     ```json
         [
             {
@@ -289,6 +290,7 @@ The project was separated into 4 layers: </br>
             }
         ]
     ```
+    
     In this route you can also paginate records using limit and offset. Example:
     ```
     http://localhost:3000/transactions?userId=1&limit=10&offset=5
@@ -299,6 +301,7 @@ The project was separated into 4 layers: </br>
     http://localhost:3000/users
     ```
     And the response will be an array of registered users:
+
     ```json
     [
         {
@@ -317,4 +320,5 @@ The project was separated into 4 layers: </br>
         }
     ]
     ```
+
 </br></br></br>
