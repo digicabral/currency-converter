@@ -17,6 +17,7 @@ const transactionsRouter = require('./routes/transactions');
 
   try {
       const result = await database.sync();
+      console.log('App started successfully');
   } catch (error) {
       console.log(error);
   }
