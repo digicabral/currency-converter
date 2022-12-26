@@ -64,4 +64,5 @@ typings/
 notes.txt
 
 #SQLITE database
-.sqlite
+*.sqlite
+*.sqlite3
