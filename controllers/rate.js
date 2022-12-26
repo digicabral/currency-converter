@@ -1,11 +1,4 @@
-const Rate = require('../db_models/rate');
 const axios = require('axios')
-
-async function insertRate(rate){
-    const data = await Rate.create(rate).then(result => result)
-    return data
-}
-module.exports.insertRate = insertRate;
 
 const exchangeConfig = {
     method: 'get',
