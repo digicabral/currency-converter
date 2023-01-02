@@ -96,7 +96,7 @@
         ],
         "summary": "Make a conversion between two currencies",
         "description": "Returns a JSON containing the ID of the transaction, ID of the user who made the conversion, origin currency, target currency, converted value, conversion rate and the transaction's date.",
-        "operationId": "getPetById",
+        "operationId": "getConversion",
         "parameters": [
           {
             "name": "userId",
