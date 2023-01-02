@@ -1,18 +1,17 @@
 #!/usr/bin/env node
+/* eslint-disable require-jsdoc */
 
-/**
- * Module dependencies.
- */
+// Module dependencies
 const database = require('../db');
-require('dotenv').config()
-var app = require('../app');
-var debug = require('debug')('currency-converter:server');
-var http = require('http');
+require('dotenv').config();
+const app = require('../app');
+const debug = require('debug')('currency-converter:server');
+const http = require('http');
 
-const db = async function initDb(){
+const db = async function initDb() {
   try {
     const result = await database.sync();
-    //console.log('App started successfully');
+    // console.log('App started successfully');
   } catch (error) {
     console.log(error);
   }
@@ -20,37 +19,28 @@ const db = async function initDb(){
 
 db();
 
-/**
- * Get port from environment and store in Express.
- */
+// Get port from environment and store in Express.
 console.log('Starting application');
 
-var port = normalizePort(process.env.PORT || '3000');
+const port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 
-if(!process.env.EXCHANGE_API || !process.env.API_KEY){
-  throw new Error('Environment variables EXCHANGE_API or API_KEY not set.')
+if (!process.env.EXCHANGE_API || !process.env.API_KEY) {
+  throw new Error('Environment variables EXCHANGE_API or API_KEY not set.');
 }
-/**
- * Create HTTP server.
- */
+// Create HTTP server.
+const server = http.createServer(app);
 
-var server = http.createServer(app);
-
-/**
- * Listen on provided port, on all network interfaces.
- */
+// Listen on provided port, on all network interfaces.
 
 server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
 
-/**
- * Normalize a port into a number, string, or false.
- */
+// Normalize a port into a number, string, or false.
 
 function normalizePort(val) {
-  var port = parseInt(val, 10);
+  const port = parseInt(val, 10);
 
   if (isNaN(port)) {
     // named pipe
@@ -65,18 +55,16 @@ function normalizePort(val) {
   return false;
 }
 
-/**
- * Event listener for HTTP server "error" event.
- */
+// Event listener for HTTP server "error" event.
 
 function onError(error) {
   if (error.syscall !== 'listen') {
     throw error;
   }
 
-  var bind = typeof port === 'string'
-    ? 'Pipe ' + port
-    : 'Port ' + port;
+  const bind = typeof port === 'string' ?
+    'Pipe ' + port :
+    'Port ' + port;
 
   // handle specific listen errors with friendly messages
   switch (error.code) {
@@ -93,14 +81,12 @@ function onError(error) {
   }
 }
 
-/**
- * Event listener for HTTP server "listening" event.
- */
+// Event listener for HTTP server "listening" event.
 
 function onListening() {
-  var addr = server.address();
-  var bind = typeof addr === 'string'
-    ? 'pipe ' + addr
-    : 'port ' + addr.port;
+  const addr = server.address();
+  const bind = typeof addr === 'string' ?
+    'pipe ' + addr :
+    'port ' + addr.port;
   debug('Listening on ' + bind);
 }
