@@ -14,6 +14,6 @@ module.exports.post = post;
 
 async function get(req, res, next){
     const users = await user.getAllUsers();
-    res.send(users)
+    res.status(200).send(users)
 }
 module.exports.get = get;

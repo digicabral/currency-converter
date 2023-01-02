@@ -3,10 +3,22 @@
 /**
  * Module dependencies.
  */
+const database = require('../db');
 require('dotenv').config()
 var app = require('../app');
 var debug = require('debug')('currency-converter:server');
 var http = require('http');
+
+const db = async function initDb(){
+  try {
+    const result = await database.sync();
+    //console.log('App started successfully');
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+db();
 
 /**
  * Get port from environment and store in Express.
